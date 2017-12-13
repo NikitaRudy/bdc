@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 
+import TopPlayersTable from './TopPlayersTable';
+
 class App extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        return <h1>Hello React!</h1>;
+        return <TopPlayersTable />;
     }
 }
 

@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux';
 
-const reducer = combineReducers({});
+import topPlayersTableReducer from './TopPlayersTable.reducer';
+
+const reducer = combineReducers({
+    TopPlayersTable: topPlayersTableReducer,
+});
 
 export default reducer;

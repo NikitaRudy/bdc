@@ -2,12 +2,11 @@ const express = require('express');
 
 const router = express.Router();
 
-const { getCurrentlRankings } = require('../services');
+const { indexController, playersController } = require('../controllers.js');
 
-router.get('/', async (req, res) => {
-    const rankings = await getCurrentlRankings();
-    res.json(rankings).end();
-});
+router.get('/', indexController);
+
+router.get('/players', playersController);
 
 
 module.exports = router;

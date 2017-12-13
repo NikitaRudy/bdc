@@ -1,8 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const nodeEnv = process.env.NODE_ENV || 'development';
+const nodeEnv = process.env.NODE_ENV || 'production';
 
 const plugins = [
     new webpack.DefinePlugin({

@@ -27,6 +27,7 @@ module.exports = {
         "no-param-reassign": ["warn", { "props": false }],
         "padded-blocks": "off",
         "no-use-before-define": "off",
+        "import/prefer-default-export": "off",
         "no-unused-vars": "warn",
         "react/require-extension": "off",
         "import/no-extraneous-dependencies": "off",

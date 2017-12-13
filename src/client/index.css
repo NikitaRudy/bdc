@@ -7,3 +7,16 @@
 a:visited {
     color: inherit;        
 }
+
+body {
+    padding-top: 100px;
+}
+
+.top-players-table {
+    width: 50%;
+    margin: 0 auto;
+}
+
+tdbody, tr, th {
+    text-align: center;
+}
