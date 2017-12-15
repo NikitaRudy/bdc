@@ -14,33 +14,36 @@ class TopPlayersTable extends Component {
         this.props.requestBelarusPlayers();
     }
 
+    renderTableContent() {
+        return this.props.players.map((cur, i) => (
+            <tr key={ cur.nickName }>
+                <th scope="row">{ i + 1 }</th>
+                <td>{ cur.nickName }</td>
+                <td>{ cur.rank }</td>
+            </tr>
+        ));
+    }
+
     render() {
         return (
-            <Table
-                hover
-                bordered
-                responsive
-                className="top-players-table"
-            >
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Leaderboard Rank</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        this.props.players.map((cur, i) => (
-                            <tr key={ cur.nickName }>
-                                <th scope="row">{ i + 1 }</th>
-                                <td>{ cur.nickName }</td>
-                                <td>{ cur.rank }</td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </Table>
+            <div>
+                <h4>Top Players</h4>
+                <Table
+                    bordered
+                    className="bdc-table"
+                >
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Leaderboard Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { this.renderTableContent() }
+                    </tbody>
+                </Table>
+            </div>
         );
     }
 }

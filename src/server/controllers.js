@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const logger = require('./logger');
+const { calculatePlayersProgress } = require('./helpers');
 
 const TopPlayersSchema = new mongoose.Schema({});
 const TopPlayers = mongoose.model('TopPlayers', TopPlayersSchema);
+const SnapshotSchema = new mongoose.Schema({});
+const Snapshot = mongoose.model('Snapshots', SnapshotSchema);
 
 function indexController(req, res) {
     res.render('index');
@@ -18,7 +21,25 @@ async function playersController(req, res) {
     }
 }
 
+async function progressController(req, res) {
+    try {
+        const lastSnapshots = await Snapshot.find()
+            .sort({ submitDate: -1 })
+            .limit(2);
+        const prevRankings = lastSnapshots[1].toObject().players;
+        const currentRankings = lastSnapshots[0].toObject().players;
+        const bdcProgress = calculatePlayersProgress(currentRankings, prevRankings)
+            .sort((a, b) => b.progress.leaderboardsProgress - a.progress.leaderboardsProgress);
+
+        res.json(bdcProgress).end();
+    } catch (e) {
+        logger.error('progressController', e);
+        res.status(400).end();
+    }
+}
+
 module.exports = {
     indexController,
     playersController,
+    progressController,
 };
