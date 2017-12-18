@@ -57,11 +57,17 @@ class ProgressTable extends Component {
         });
     }
 
+    formatHeader() {
+        const { firstSnapshotDate, secondSnapshotDate } = this.props;
+        return `Daily Progress (The difference between
+            ${firstSnapshotDate.toDateString()} and
+            ${secondSnapshotDate.toDateString()})`;
+    }
+
     render() {
-        console.log(this.props);
         return (
             <div>
-                <h4>Daily Progress</h4>
+                <h4>{this.formatHeader()}</h4>
                 <Table
                     bordered
                     className="bdc-table"
@@ -86,9 +92,15 @@ class ProgressTable extends Component {
 ProgressTable.propTypes = {
     requestProgress: propTypes.func,
     progress: propTypes.array,
+    firstSnapshotDate: propTypes.object,
+    secondSnapshotDate: propTypes.object,
 };
 
 export default connect(
-    state => ({ progress: state.ProgressTable.progress }),
+    state => ({
+        progress: state.ProgressTable.progress,
+        firstSnapshotDate: state.ProgressTable.firstSnapshotDate,
+        secondSnapshotDate: state.ProgressTable.secondSnapshotDate,
+    }),
     { requestProgress }
 )(ProgressTable);

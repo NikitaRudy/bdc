@@ -16,9 +16,9 @@ function calculatePlayerProgress(player, prev, current) {
     return {
         bdcProgress: isOutOfTable ? null : bdcPrevPosition - bdcCurrentPosition,
         leaderboardsProgress: isOutOfTable ? null : leaderboardsPrevPosition - leaderboardsCurrentPosition,
-        bdcPrevPosition,
+        bdcPrevPosition: bdcPrevPosition + 1,
         leaderboardsPrevPosition,
-        bdcCurrentPosition,
+        bdcCurrentPosition: bdcCurrentPosition + 1,
         leaderboardsCurrentPosition,
 
     };

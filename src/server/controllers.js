@@ -26,12 +26,18 @@ async function progressController(req, res) {
         const lastSnapshots = await Snapshot.find()
             .sort({ submitDate: -1 })
             .limit(2);
-        const prevRankings = lastSnapshots[1].toObject().players;
-        const currentRankings = lastSnapshots[0].toObject().players;
-        const bdcProgress = calculatePlayersProgress(currentRankings, prevRankings)
+        const prevRankings = lastSnapshots[1].toObject();
+        const currentRankings = lastSnapshots[0].toObject();
+        const bdcProgress = calculatePlayersProgress(currentRankings.players, prevRankings.players)
             .sort((a, b) => b.progress.leaderboardsProgress - a.progress.leaderboardsProgress);
 
-        res.json(bdcProgress).end();
+        const progressData = {
+            bdcProgress,
+            firstSnapshotDate: prevRankings.submitDate,
+            secondSnapshotDate: currentRankings.submitDate,
+        };
+
+        res.json(progressData).end();
     } catch (e) {
         logger.error('progressController', e);
         res.status(400).end();

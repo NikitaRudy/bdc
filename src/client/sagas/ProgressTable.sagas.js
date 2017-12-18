@@ -7,8 +7,14 @@ import { getProgress } from '../services/ProgressTable.services';
 function* requestProgressWorker() {
     try {
         const { data } = yield call(getProgress);
+        console.log(data);
+        const progressData = {
+            progress: data.bdcProgress.slice(),
+            firstSnapshotDate: new Date(data.firstSnapshotDate),
+            secondSnapshotDate: new Date(data.secondSnapshotDate),
+        };
 
-        yield put(requestProgressComplete(data));
+        yield put(requestProgressComplete(progressData));
     } catch (err) {
         yield put({ type: 'REQUEST_PROGRESS_COMPLETE', payload: err });
     }
