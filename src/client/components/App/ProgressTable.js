@@ -4,6 +4,7 @@ import { Table } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import { requestProgress } from '../../actions/ProgressTable.actions';
+import TableHeader from './TableHeader';
 
 class ProgressTable extends Component {
     constructor(props) {
@@ -57,17 +58,22 @@ class ProgressTable extends Component {
         });
     }
 
-    formatHeader() {
+    formatHeaderContent() {
         const { firstSnapshotDate, secondSnapshotDate } = this.props;
-        return `Daily Progress (The difference between
-            ${firstSnapshotDate.toDateString()} and
-            ${secondSnapshotDate.toDateString()})`;
+        return {
+            headerContent: 'Daily Progress',
+            secondaryHeaderContent: `The difference between ${firstSnapshotDate.toLocaleString()} and ${secondSnapshotDate.toLocaleString()}`,
+        };
     }
 
     render() {
+        const { headerContent, secondaryHeaderContent } = this.formatHeaderContent();
         return (
             <div>
-                <h4>{this.formatHeader()}</h4>
+                <TableHeader
+                    headerContent={ headerContent }
+                    secondaryHeaderContent={ secondaryHeaderContent }
+                />
                 <Table
                     bordered
                     className="bdc-table"

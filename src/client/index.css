@@ -16,19 +16,21 @@ body {
     background-color: rgba(247, 247, 247, 0.2);
 }
 
-h1, h4 {
+h1, h4, h6 {
     text-align: center;
     margin: 0 auto;
     padding: 10px 0;
 }
 
 .bdc-table {
-    width: 50%;
+    max-width: 1000px;
+    min-width: 400px;
     margin: 0 auto;
 }
 
 .navigation {
-    width: 50%;
+    width: 250px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-around;
     align-items: center;

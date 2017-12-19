@@ -6,9 +6,11 @@ import { getTopPlayers } from '../services/TopPlayersTable.services';
 
 function* requestPlayersWorker() {
     try {
-        const { data: { players } } = yield call(getTopPlayers);
+        const { data: { players, submitDate } } = yield call(getTopPlayers);
         players.sort((a, b) => a.rank - b.rank);
-        yield put(requestBelarusPlayersComplete(players));
+
+        const topPlayersData = { players, snapshotDate: new Date(submitDate) };
+        yield put(requestBelarusPlayersComplete(topPlayersData));
     } catch (err) {
         yield put({ type: 'REQUEST_BELARUS_PLAYERS_FAILED', payload: err });
     }

@@ -4,6 +4,7 @@ import { Table } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import { requestBelarusPlayers } from '../../actions/TopPlayersTable.actions';
+import TableHeader from './TableHeader';
 
 class TopPlayersTable extends Component {
     constructor(props) {
@@ -24,10 +25,21 @@ class TopPlayersTable extends Component {
         ));
     }
 
+    formatHeaderContent() {
+        return {
+            headerContent: 'Top Players',
+            secondaryHeaderContent: `Updated hourly. Last update was ${this.props.snapshotDate.toLocaleString()}`,
+        };
+    }
+
     render() {
+        const { headerContent, secondaryHeaderContent } = this.formatHeaderContent();
         return (
             <div>
-                <h4>Top Players</h4>
+                <TableHeader
+                    headerContent={ headerContent }
+                    secondaryHeaderContent={ secondaryHeaderContent }
+                />
                 <Table
                     bordered
                     className="bdc-table"
@@ -51,9 +63,13 @@ class TopPlayersTable extends Component {
 TopPlayersTable.propTypes = {
     requestBelarusPlayers: propTypes.func,
     players: propTypes.array,
+    snapshotDate: propTypes.object,
 };
 
 export default connect(
-    state => ({ players: state.TopPlayersTable.players }),
+    state => ({
+        players: state.TopPlayersTable.players,
+        snapshotDate: state.TopPlayersTable.snapshotDate,
+    }),
     { requestBelarusPlayers }
 )(TopPlayersTable);
