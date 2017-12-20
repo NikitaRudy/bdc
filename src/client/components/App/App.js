@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom';
 
 import TopPlayersTable from './TopPlayersTable';
 import ProgressTable from './ProgressTable';
+import Navigation from './Navigation';
+import Statistics from './Statistics';
 
 class App extends Component {
     constructor(props) {
@@ -13,8 +15,9 @@ class App extends Component {
     render() {
         return (
             <main>
-                <h1>BDC LEADERBOARDS</h1>
-                <Route exact path="/" component={ TopPlayersTable } />
+                <Navigation />
+                {/* <Route exact path ="/" component={ Statistics } /> */}
+                <Route exact path="/rankings" component={ TopPlayersTable } />
                 <Route exact path="/progress" component={ ProgressTable } />
             </main>
         );

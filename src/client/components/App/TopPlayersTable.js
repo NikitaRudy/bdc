@@ -42,7 +42,6 @@ class TopPlayersTable extends Component {
                 />
                 <Table
                     bordered
-                    className="bdc-table"
                 >
                     <thead>
                         <tr>

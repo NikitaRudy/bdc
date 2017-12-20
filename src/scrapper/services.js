@@ -55,16 +55,14 @@ async function updateRankings(dbAction) {
 }
 
 async function updateTopPlayers({ updates, options }) {
-    await Promise.resolve(); // TopPlayers.findOneAndUpdate({ id: LIST_ID }, updates, options);
+    await TopPlayers.findOneAndUpdate({ id: LIST_ID }, updates, options);
 
     console.log('top list was succesfully saved to the database');
 }
 
 async function saveDailySnapshot({ updates: data }) {
-    // const snapshot = new Snapshot(data);
-    // await snapshot.save();
-
-    await Promise.resolve();
+    const snapshot = new Snapshot(data);
+    await snapshot.save();
 
     console.log('top list snapshot was succesfully saved to the database');
 }

@@ -76,7 +76,6 @@ class ProgressTable extends Component {
                 />
                 <Table
                     bordered
-                    className="bdc-table"
                 >
                     <thead>
                         <tr>
