@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const logger = require('./logger');
 const { calculatePlayersProgress } = require('./helpers');
 
-const TopPlayersSchema = new mongoose.Schema({});
-const TopPlayers = mongoose.model('TopPlayers', TopPlayersSchema);
-const SnapshotSchema = new mongoose.Schema({});
-const Snapshot = mongoose.model('Snapshots', SnapshotSchema);
+// const TopPlayersSchema = new mongoose.Schema({});
+// const SnapshotSchema = new mongoose.Schema({});
+// const Snapshot = mongoose.model('Snapshots', SnapshotSchema);
+const { TopPlayers, Snapshot } =  require('../scrapper/models'); // mongoose.model('TopPlayers', TopPlayersSchema);
 
 function indexController(req, res) {
     res.render('index');
