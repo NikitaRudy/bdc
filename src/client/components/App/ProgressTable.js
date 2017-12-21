@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { requestProgress } from '../../actions/ProgressTable.actions';
 import TableHeader from './TableHeader';
+import ProgressRow from './ProgressRow';
 
 class ProgressTable extends Component {
     constructor(props) {
@@ -13,49 +14,6 @@ class ProgressTable extends Component {
 
     componentDidMount() {
         this.props.requestProgress();
-    }
-
-    formatProgressString(progress, prev, current) {
-        if (progress === 0) {
-            return 'no progress';
-        }
-
-        const progressString = progress > 0 ? `+${progress}` : progress;
-        const fromTostring = `from ${prev} to ${current}`;
-
-        return (
-            <div>
-                <div>{ progressString }</div><div>{ fromTostring }</div>
-            </div>
-        );
-    }
-
-    renderTableContent() {
-        return this.props.progress.map((cur, i) => {
-            const {
-                progress: {
-                    leaderboardsProgress,
-                    bdcProgress,
-                    bdcPrevPosition,
-                    leaderboardsPrevPosition,
-                    bdcCurrentPosition,
-                    leaderboardsCurrentPosition,
-                },
-                nickName,
-            } = cur;
-            return (
-                <tr key={ `${nickName}-${leaderboardsProgress}` }>
-                    <th scope="row">{ i + 1 }</th>
-                    <td>{ nickName }</td>
-                    <td>
-                        { this.formatProgressString(leaderboardsProgress, leaderboardsPrevPosition, leaderboardsCurrentPosition) }
-                    </td>
-                    <td>
-                        { this.formatProgressString(bdcProgress, bdcPrevPosition, bdcCurrentPosition) }
-                    </td>
-                </tr>
-            );
-        });
     }
 
     formatHeaderContent() {
@@ -86,7 +44,13 @@ class ProgressTable extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.renderTableContent() }
+                        {
+                            this.props.progress.map((cur, index) => {
+                                const { progress, nickName } = cur;
+                                const props = { ...progress, nickName, index };
+                                return <ProgressRow key={ nickName } { ...props } />;
+                            })
+                        }
                     </tbody>
                 </Table>
             </div>

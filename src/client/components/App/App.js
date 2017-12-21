@@ -16,7 +16,7 @@ class App extends Component {
         return (
             <main>
                 <Navigation />
-                {/* <Route exact path ="/" component={ Statistics } /> */}
+                <Route exact path ="/" component={ Statistics } />
                 <Route exact path="/rankings" component={ TopPlayersTable } />
                 <Route exact path="/progress" component={ ProgressTable } />
             </main>
