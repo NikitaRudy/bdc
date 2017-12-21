@@ -1,45 +1,71 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Badge } from 'reactstrap';
+
+import ProgressValue from './ProgressValue';
 
 class ProgressRow extends Component {
-    formatProgressString(progress, prev, current) {
-        if (progress === 0) {
-            return <Badge color="primary" >0</Badge>;
+    getProgressValue(progress, prev, current, index, type) {
+        let badgeProps = {
+            index,
+            type,
+            body: (
+                <div>
+                    <div>Previous: { prev }</div>
+                    <div>Current: { current }</div>
+                </div>
+            ),
+        };
+        const positive = {
+            color: 'success',
+            value: `+${progress}`,
+        };
+        const negative = {
+            color: 'danger',
+            value: progress,
+        };
+        const zero = {
+            color: 'primary',
+            value: progress,
+            body: null,
+        };
+
+        switch (true) {
+            case progress === 0:
+                badgeProps = { ...badgeProps, ...zero };
+                break;
+            case progress > 0:
+                badgeProps = { ...badgeProps, ...positive };
+                break;
+            case progress < 0:
+                badgeProps = { ...badgeProps, ...negative };
+                break;
+            default:
         }
 
-        const progressJsx = progress > 0
-            ? <Badge color="success" >+{ progress }</Badge>
-            : <Badge color="danger">{ progress }</Badge>;
-        const fromTostring = `from ${prev} to ${current}`;
-        return (
-            <div>
-                { progressJsx }
-                <div>{ fromTostring }</div>
-            </div>
-        );
+        return <ProgressValue { ...badgeProps } />;
+
     }
 
     render() {
         const {
             nickName,
-            leaderboardsProgress,
-            leaderboardsPrevPosition,
-            leaderboardsCurrentPosition,
-            bdcProgress,
-            bdcPrevPosition,
-            bdcCurrentPosition,
+            leaderboardsProgress: lbProg,
+            leaderboardsPrevPosition: lbPrevPos,
+            leaderboardsCurrentPosition: lbCurPos,
+            bdcProgress: bdcProg,
+            bdcPrevPosition: bdcPrevPos,
+            bdcCurrentPosition: bdcCurPos,
             index,
         } = this.props;
         return (
-            <tr key={ `${nickName}-${leaderboardsProgress}` }>
+            <tr key={ `${nickName}-${lbProg}` }>
                 <th scope="row">{ index + 1 }</th>
                 <td>{ nickName }</td>
                 <td>
-                    { this.formatProgressString(leaderboardsProgress, leaderboardsPrevPosition, leaderboardsCurrentPosition) }
+                    { this.getProgressValue(lbProg, lbPrevPos, lbCurPos, index, 'lb') }
                 </td>
                 <td>
-                    { this.formatProgressString(bdcProgress, bdcPrevPosition, bdcCurrentPosition) }
+                    { this.getProgressValue(bdcProg, bdcPrevPos, bdcCurPos, index, 'bdc') }
                 </td>
             </tr>
         );
