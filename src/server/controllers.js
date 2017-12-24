@@ -46,22 +46,30 @@ async function statisticsController(req, res) {
             .sort({ submitDate: -1 })
             .limit(2);
 
+        let newestRankings = await TopPlayers.find();
+
+        newestRankings = newestRankings[0].toObject();
         const prevRankings = lastSnapshots[1].toObject();
         const currentRankings = lastSnapshots[0].toObject();
+
+        const bdcProgress = calculatePlayersProgress(currentRankings.players, prevRankings.players)
+            .sort((a, b) => b.progress.leaderboardsProgress - a.progress.leaderboardsProgress);
 
         const newcomers = currentRankings.players
             .filter(cur => !prevRankings.players.some(player => player.nickName === cur.nickName));
         const departed = prevRankings.players
             .filter(cur => !currentRankings.players.some(player => player.nickName === cur.nickName));
 
-        const percentage = ((currentRankings.players.length / currentRankings.lbPlayersCount) * 100).toFixed(2);
+        const percentage = ((newestRankings.players.length / newestRankings.lbPlayersCount) * 100).toFixed(2);
 
         res.json({
             departed,
             newcomers,
             percentage,
-            lbPlayersCount: currentRankings.lbPlayersCount,
-            bdcPlayersCount: currentRankings.players.length,
+            lbPlayersCount: newestRankings.lbPlayersCount,
+            bdcPlayersCount: newestRankings.players.length,
+            topRank: newestRankings.players.slice(0, 3),
+            topProgress: bdcProgress.slice(0, 3),
         }).end();
     } catch (e) {
         logger.error('statisticsController', e);

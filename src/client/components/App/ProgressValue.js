@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Badge, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Badge, Popover, PopoverBody } from 'reactstrap';
 
 class ProgressValue extends Component {
     constructor(props) {
@@ -24,9 +24,10 @@ class ProgressValue extends Component {
             color,
             index,
             type,
+            customClassName,
         } = this.props;
         return (
-            <span>
+            <span className={ customClassName }>
                 <Badge
                     onMouseEnter={ this.togglePopover }
                     onMouseLeave={ this.togglePopover }
@@ -37,6 +38,7 @@ class ProgressValue extends Component {
                 </Badge>
                 { body ?
                     <Popover
+                        style={ { padding: '10px' } }
                         placement="top"
                         isOpen={ this.state.popoverOpen }
                         target={ `progressValue-${index}-${type}` }
@@ -58,6 +60,7 @@ ProgressValue.propTypes = {
     color: propTypes.string,
     index: propTypes.number,
     type: propTypes.string,
+    customClassName: propTypes.any,
 };
 
 export default ProgressValue;
