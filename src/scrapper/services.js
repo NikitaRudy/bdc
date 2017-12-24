@@ -45,7 +45,12 @@ async function updateRankings(dbAction) {
     }).toArray();
 
     const options = { upsert: true, new: true };
-    const updates = { players: topListData, submitDate: Date.now(), id: LIST_ID };
+    const updates = {
+        players: topListData,
+        submitDate: Date.now(),
+        id: LIST_ID,
+        lbPlayersCount: allPlayers.length,
+    };
 
     console.log(`top list length: ${topListData.length}`);
 

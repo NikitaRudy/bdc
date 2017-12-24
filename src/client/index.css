@@ -32,3 +32,8 @@ td, th {
 .progress-badge {
     cursor: default;
 }
+
+.root-link {
+    font-size: 30px;
+    font-weight: 500;
+}

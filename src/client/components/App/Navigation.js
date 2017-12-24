@@ -13,7 +13,7 @@ class Navigation extends Component {
         return (
             <div>
                 <Navbar>
-                    <NavbarBrand tag={ Link } to="/">
+                    <NavbarBrand className="root-link" tag={ Link } to="/">
                         BDC Leaderboards
                     </NavbarBrand>
                     <Nav className="ml-auto">
