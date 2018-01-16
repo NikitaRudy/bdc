@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Table } from 'reactstrap';
+import { Table, NavLink, Nav, NavItem } from 'reactstrap';
 import { connect } from 'react-redux';
 
-import { requestProgress } from '../../actions/ProgressTable.actions';
+import { requestProgress, changeProgressFilter } from '../../actions/ProgressTable.actions';
 import TableHeader from './TableHeader';
 import ProgressRow from './ProgressRow';
 
 class ProgressTable extends Component {
     constructor(props) {
         super(props);
+
+        this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
     componentDidMount() {
@@ -17,21 +19,59 @@ class ProgressTable extends Component {
     }
 
     formatHeaderContent() {
-        const { firstSnapshotDate, secondSnapshotDate } = this.props;
+        const { filter } = this.props;
+        const prevString = this.props[filter].firstSnapshotDate.toLocaleString();
+        const curString = this.props[filter].secondSnapshotDate.toLocaleString();
+        const progressKeyString = filter[0].toUpperCase().concat(filter.slice(1));
         return {
-            headerContent: 'Daily Progress',
-            secondaryHeaderContent: `The difference between ${firstSnapshotDate.toLocaleString()} and ${secondSnapshotDate.toLocaleString()}`,
+            headerContent: `${progressKeyString} Progress`,
+            secondaryHeaderContent: `The difference between ${prevString} and ${curString}`,
         };
+    }
+
+    handleFilterChange(e) {
+        const filter = e.target.getAttribute('data-filter');
+        this.props.changeProgressFilter(filter);
     }
 
     render() {
         const { headerContent, secondaryHeaderContent } = this.formatHeaderContent();
+        const progressData = this.props[this.props.filter].progress;
         return (
             <div>
                 <TableHeader
                     headerContent={ headerContent }
                     secondaryHeaderContent={ secondaryHeaderContent }
                 />
+                <Nav tabs>
+                    <NavItem >
+                        <NavLink
+                            active={ this.props.filter === 'daily' }
+                            style={ { color: 'black' } }
+                            href="#"
+                            onClick={ this.handleFilterChange }
+                            data-filter="daily"
+                        >Daily</NavLink>
+                    </NavItem>
+                    <NavItem >
+                        <NavLink
+                            active={ this.props.filter === 'weekly' }
+                            style={ { color: 'black' } }
+                            href="#"
+                            onClick={ this.handleFilterChange }
+                            data-filter="weekly"
+                        >Weekly</NavLink>
+                    </NavItem>
+                    <NavItem >
+                        <NavLink
+                            active={ this.props.filter === 'monthly' }
+                            style={ { color: 'black' } }
+                            href="#"
+                            onClick={ this.handleFilterChange }
+                            data-filter="monthly"
+                        >Monthly</NavLink>
+                    </NavItem>
+                </Nav>
                 <Table
                     bordered
                 >
@@ -45,10 +85,10 @@ class ProgressTable extends Component {
                     </thead>
                     <tbody>
                         {
-                            this.props.progress.map((cur, index) => {
+                            progressData.map((cur, index) => {
                                 const { progress, nickName } = cur;
                                 const props = { ...progress, nickName, index };
-                                return <ProgressRow key={ nickName } { ...props } />;
+                                return <ProgressRow key={ index } { ...props } />;
                             })
                         }
                     </tbody>
@@ -60,16 +100,22 @@ class ProgressTable extends Component {
 
 ProgressTable.propTypes = {
     requestProgress: propTypes.func,
-    progress: propTypes.array,
-    firstSnapshotDate: propTypes.object,
-    secondSnapshotDate: propTypes.object,
+    changeProgressFilter: propTypes.func,
+    filter: propTypes.string,
+    daily: propTypes.object,
+    weekly: propTypes.object,
+    monthly: propTypes.object,
 };
 
 export default connect(
     state => ({
-        progress: state.ProgressTable.progress,
-        firstSnapshotDate: state.ProgressTable.firstSnapshotDate,
-        secondSnapshotDate: state.ProgressTable.secondSnapshotDate,
+        daily: state.ProgressTable.daily,
+        weekly: state.ProgressTable.weekly,
+        monthly: state.ProgressTable.monthly,
+        filter: state.ProgressTable.filter,
     }),
-    { requestProgress }
+    {
+        requestProgress,
+        changeProgressFilter,
+    }
 )(ProgressTable);

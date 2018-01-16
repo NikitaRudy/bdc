@@ -17,7 +17,7 @@ class TopPlayersTable extends Component {
 
     renderTableContent() {
         return this.props.players.map((cur, i) => (
-            <tr key={ cur.nickName }>
+            <tr key={ i }>
                 <th scope="row">{ i + 1 }</th>
                 <td>{ cur.nickName }</td>
                 <td>{ cur.rank }</td>

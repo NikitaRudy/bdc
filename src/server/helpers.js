@@ -20,9 +20,7 @@ function calculatePlayerProgress(player, prev, current) {
         leaderboardsPrevPosition,
         bdcCurrentPosition: bdcCurrentPosition + 1,
         leaderboardsCurrentPosition,
-
     };
-
 }
 
 module.exports = {

@@ -6,11 +6,23 @@ import { getProgress } from '../services/ProgressTable.services';
 
 function* requestProgressWorker() {
     try {
-        const { data } = yield call(getProgress);
+        const { data: { daily, weekly, monthly } } = yield call(getProgress);
         const progressData = {
-            progress: data.bdcProgress.slice(),
-            firstSnapshotDate: new Date(data.firstSnapshotDate),
-            secondSnapshotDate: new Date(data.secondSnapshotDate),
+            daily: {
+                progress: daily.bdcProgress.slice(),
+                firstSnapshotDate: new Date(daily.firstSnapshotDate),
+                secondSnapshotDate: new Date(daily.secondSnapshotDate),
+            },
+            weekly: {
+                progress: weekly.bdcProgress.slice(),
+                firstSnapshotDate: new Date(weekly.firstSnapshotDate),
+                secondSnapshotDate: new Date(weekly.secondSnapshotDate),
+            },
+            monthly: {
+                progress: monthly.bdcProgress.slice(),
+                firstSnapshotDate: new Date(monthly.firstSnapshotDate),
+                secondSnapshotDate: new Date(monthly.secondSnapshotDate),
+            },
         };
 
         yield put(requestProgressComplete(progressData));

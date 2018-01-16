@@ -1,5 +1,6 @@
 const logger = require('./logger');
 const { calculatePlayersProgress } = require('./helpers');
+const { formatProgress } = require('./formatters');
 
 const { TopPlayers, Snapshot } = require('../scrapper/models');
 
@@ -20,17 +21,27 @@ async function playersController(req, res) {
 async function progressController(req, res) {
     try {
         const lastSnapshots = await Snapshot.find()
-            .sort({ submitDate: -1 })
-            .limit(2);
-        const prevRankings = lastSnapshots[1].toObject();
-        const currentRankings = lastSnapshots[0].toObject();
-        const bdcProgress = calculatePlayersProgress(currentRankings.players, prevRankings.players)
-            .sort((a, b) => b.progress.leaderboardsProgress - a.progress.leaderboardsProgress);
+            .sort({ submitDate: -1 });
+
+        const dailySnapshots = {
+            prevRankings: lastSnapshots[1].toObject(),
+            currentRankings: lastSnapshots[0].toObject(),
+        };
+
+        const weeklySnapshots = {
+            prevRankings: lastSnapshots[6].toObject(),
+            currentRankings: lastSnapshots[0].toObject(),
+        };
+
+        const monthlySnapshots = {
+            prevRankings: lastSnapshots[30].toObject(),
+            currentRankings: lastSnapshots[0].toObject(),
+        };
 
         const progressData = {
-            bdcProgress,
-            firstSnapshotDate: prevRankings.submitDate,
-            secondSnapshotDate: currentRankings.submitDate,
+            daily: formatProgress(dailySnapshots),
+            weekly: formatProgress(weeklySnapshots),
+            monthly: formatProgress(monthlySnapshots),
         };
 
         res.json(progressData).end();
