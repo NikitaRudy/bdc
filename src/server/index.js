@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 
-const { MONGO_PATH } = require('./config');
+const { MONGO_PATH } = require('../config');
 const router = require('./router/router');
 const logger = require('./logger');
 

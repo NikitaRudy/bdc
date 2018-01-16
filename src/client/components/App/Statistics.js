@@ -29,8 +29,8 @@ class Statistics extends Component {
                 <h5>Top 3 Players</h5>
                 <ListGroup>
                     { topRank.map(cur => (
-                        <ListGroupItem key={ cur.nickName }>
-                            <span>{ cur.nickName }</span><span className="ml-auto">{ cur.rank }</span>
+                        <ListGroupItem key={ cur.nickName } className="list-item" >
+                            <span>{ cur.nickName }</span><span>{ cur.rank }</span>
                         </ListGroupItem>
                     )) }
                 </ListGroup>
@@ -38,10 +38,9 @@ class Statistics extends Component {
                 <h5>Daily Progress Top 3</h5>
                 <ListGroup>
                     { topProgress.map((cur, i) => (
-                        <ListGroupItem key={ cur.nickName }>
+                        <ListGroupItem key={ cur.nickName } className="list-item">
                             <span>{ cur.nickName }</span>
                             <ProgressValue
-                                customClassName="ml-auto"
                                 index={ i }
                                 value={ `+${cur.progress.leaderboardsProgress}` }
                                 type="lb"
@@ -55,7 +54,7 @@ class Statistics extends Component {
                     <h5>Newcomers</h5>
                     <ListGroup>
                         { newcomers.length ? newcomers.map(cur => (
-                            <ListGroupItem key={ cur.nickName }>
+                            <ListGroupItem key={ cur.nickName } className="list-item">
                                 <span>{ cur.nickName }</span><span className="ml-auto">{ cur.rank }</span>
                             </ListGroupItem>
                         )) : 'Noone' }

@@ -3,11 +3,11 @@ const Nightmare = require('nightmare');
 const mongoose = require('mongoose');
 
 const { Snapshot, TopPlayers } = require('./models');
+const { MONGO_PATH } = require('../config');
 
 const LEADERBOARDS_URL = 'http://www.dota2.com/leaderboards/#europe';
-const BY_FLAG_IMG_SRC = 'http://community.edgecast.steamstatic.com/public/images/countryflags/by.gif';
-const MONGO_PATH = 'mongodb://nikitarudy:f1nchello@ds135946.mlab.com:35946/bdc-leaderboards';
 const LIST_ID = 'list#1';
+const KEY_STRING = 'by.gif';
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_PATH, { useMongoClient: true });
@@ -34,7 +34,7 @@ async function updateRankings(dbAction) {
 
     const byPlayers = allPlayers.filter((i, el) => {
         const flagSrc = $(el).find('div img').attr('src');
-        return flagSrc && flagSrc.indexOf('by.gif') !== -1;
+        return flagSrc && flagSrc.indexOf(KEY_STRING) !== -1;
     });
     console.log(`found ${byPlayers.length} BY rows`);
 

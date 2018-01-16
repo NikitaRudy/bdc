@@ -34,7 +34,7 @@ const base = {
     output: {
         filename: 'bundle.min.js',
         sourceMapFilename: 'bundle.min.js.map',
-        path: path.join(__dirname, './public/js'),
+        path: path.join(__dirname, './public'),
     },
 
     module: {
@@ -45,6 +45,10 @@ const base = {
                 use: [
                     'babel-loader',
                 ],
+            },
+            {
+                test: /\.(ttf|woff|woff2|eot|svg|png)$/,
+                loader: 'file-loader',
             },
             {
                 test: /\.css$/,

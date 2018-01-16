@@ -35,3 +35,8 @@ td, th {
     font-size: 30px;
     font-weight: 500;
 }
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+}
