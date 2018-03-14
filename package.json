@@ -14,6 +14,8 @@
     "mongoose": "^4.13.7",
     "morgan": "^1.9.0",
     "nightmare": "^2.10.0",
+    "preact": "^8.2.7",
+    "preact-compat": "^3.18.0",
     "pug": "^2.0.0-rc.4"
   },
   "devDependencies": {
@@ -25,6 +27,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.0.0-beta.3",
+    "compression-webpack-plugin": "^1.1.11",
     "css-loader": "^0.28.7",
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
