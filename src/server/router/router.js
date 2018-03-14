@@ -15,7 +15,7 @@ router.get('/api/progress', progressController);
 
 router.get('/api/statistics', statisticsController);
 
-router.get('*.js', (req, res, next) => {
+router.get(/.+\.css$|.+\.js$/g, (req, res, next) => {
     req.url += '.gz';
     res.set('Content-Encoding', 'gzip');
     next();
