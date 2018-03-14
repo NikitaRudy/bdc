@@ -3,14 +3,13 @@ const Nightmare = require('nightmare');
 const mongoose = require('mongoose');
 
 const { Snapshot, TopPlayers } = require('./models');
-const { MONGO_PATH } = require('../config');
 
 const LEADERBOARDS_URL = 'http://www.dota2.com/leaderboards/#europe';
 const LIST_ID = 'list#1';
 const KEY_STRING = 'by.gif';
 
 mongoose.Promise = Promise;
-mongoose.connect(MONGO_PATH, { useMongoClient: true });
+mongoose.connect(process.env.MONGO_PATH, { useMongoClient: true });
 
 const db = mongoose.connection;
 db.once('open', console.info.bind(console, 'connected to the database'));

@@ -40,8 +40,8 @@ const base = {
     entry: ['babel-polyfill', './src/client/index.js'],
 
     output: {
-        filename: 'bundle.min.js',
-        sourceMapFilename: 'bundle.min.js.map',
+        filename: 'bundle.js',
+        sourceMapFilename: 'bundle.js.map',
         path: path.join(__dirname, './public'),
     },
 

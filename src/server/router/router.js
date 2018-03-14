@@ -15,12 +15,6 @@ router.get('/api/progress', progressController);
 
 router.get('/api/statistics', statisticsController);
 
-router.get(/.+\.css$|.+\.js$/g, (req, res, next) => {
-    req.url += '.gz';
-    res.set('Content-Encoding', 'gzip');
-    next();
-});
-
 router.get('*', indexController);
 
 module.exports = router;
