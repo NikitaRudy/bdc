@@ -46,13 +46,7 @@ async function progressController(req, res) {
             monthly: formatProgress(monthlySnapshots),
         };
 
-        const progressJson = JSON.stringify(progressData);
-        const gziped = await promisify(zlib.gzip)(progressJson);
-
-        res.set('Content-Encoding', 'gzip');
-        res.set('Content-Type', 'application/json');
-
-        res.send(gziped).end();
+        res.json(progressData).end();
     } catch (e) {
         logger.error('progressController', e);
         res.status(400).end();
