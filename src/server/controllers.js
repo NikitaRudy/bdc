@@ -1,3 +1,5 @@
+const zlib = require('zlib');
+const { promisify } = require('util');
 const logger = require('./logger');
 const { calculatePlayersProgress } = require('./helpers');
 const { formatProgress } = require('./formatters');
@@ -44,7 +46,13 @@ async function progressController(req, res) {
             monthly: formatProgress(monthlySnapshots),
         };
 
-        res.json(progressData).end();
+        const progressJson = JSON.stringify(progressData);
+        const gziped = await promisify(zlib.gzip)(progressJson);
+
+        res.set('Content-Encoding', 'gzip');
+        res.set('Content-Type', 'application/json');
+
+        res.send(gziped).end();
     } catch (e) {
         logger.error('progressController', e);
         res.status(400).end();
