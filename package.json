@@ -4,7 +4,8 @@
   "scripts": {
     "start": "node src/server/index.js",
     "dev:watch": "webpack --watch --mode=development",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "heroku-postbuild": "npm run build"
   },
   "author": "Nikita Rudy",
   "dependencies": {
