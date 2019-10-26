@@ -1,5 +1,5 @@
-import axios from 'axios';
+import { get } from '../utils';
 
 export function getTopPlayers() {
-    return axios.get('/api/players');
+    return get('/api/players');
 }

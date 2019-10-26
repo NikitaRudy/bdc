@@ -1,19 +1,16 @@
-const zlib = require('zlib');
-const { promisify } = require('util');
 const logger = require('./logger');
-const { calculatePlayersProgress } = require('./helpers');
 const { formatProgress } = require('./formatters');
 
 const { TopPlayers, Snapshot } = require('../scrapper/models');
 
-function indexController(req, res) {
-    res.render('index');
-}
-
 async function playersController(req, res) {
     try {
-        const topPlayers = await TopPlayers.find();
-        res.json(topPlayers[0]).end();
+        const [core, support] = await Promise.all([
+            TopPlayers.findOne({ kind: 'core' }),
+            TopPlayers.findOne({ kind: 'support' }),
+        ]);
+
+        res.json({ core, support }).end();
     } catch (e) {
         logger.error('playersController', e);
         res.status(400).end(e);
@@ -22,28 +19,32 @@ async function playersController(req, res) {
 
 async function progressController(req, res) {
     try {
-        const lastSnapshots = await Snapshot.find()
-            .sort({ submitDate: -1 });
+        const [lastCoreSnapshots, lastSupportSnapshots] = await Promise.all([
+            Snapshot.find({ kind: 'core' })
+                .sort({ submitDate: -1 })
+                .lean(),
+            Snapshot.find({ kind: 'support' })
+                .sort({ submitDate: -1 })
+                .lean(),
+        ]);
 
-        const dailySnapshots = {
-            prevRankings: lastSnapshots[1].toObject(),
-            currentRankings: lastSnapshots[0].toObject(),
+        const dailyCoreSnapshots = {
+            prevRankings: lastCoreSnapshots[1],
+            currentRankings: lastCoreSnapshots[0],
         };
 
-        const weeklySnapshots = {
-            prevRankings: lastSnapshots[6].toObject(),
-            currentRankings: lastSnapshots[0].toObject(),
-        };
-
-        const monthlySnapshots = {
-            prevRankings: lastSnapshots[30].toObject(),
-            currentRankings: lastSnapshots[0].toObject(),
+        const dailySupportSnapshots = {
+            prevRankings: lastSupportSnapshots[1],
+            currentRankings: lastCoreSnapshots[0],
         };
 
         const progressData = {
-            daily: formatProgress(dailySnapshots),
-            weekly: formatProgress(weeklySnapshots),
-            monthly: formatProgress(monthlySnapshots),
+            core: {
+                daily: formatProgress(dailyCoreSnapshots),
+            },
+            support: {
+                daily: formatProgress(dailySupportSnapshots),
+            },
         };
 
         res.json(progressData).end();
@@ -57,27 +58,24 @@ async function statisticsController(req, res) {
     try {
         const lastSnapshots = await Snapshot.find()
             .sort({ submitDate: -1 })
-            .limit(2);
+            .limit(2)
+            .lean();
 
-        let newestRankings = await TopPlayers.find();
+        const [newestRankings] = await TopPlayers.find().lean();
 
-        newestRankings = newestRankings[0].toObject();
-        const prevRankings = lastSnapshots[1].toObject();
-        const currentRankings = lastSnapshots[0].toObject();
+        const [currentRankings, prevRankings] = lastSnapshots;
 
-        const bdcProgress = calculatePlayersProgress(currentRankings.players, prevRankings.players)
-            .sort((a, b) => b.progress.leaderboardsProgress - a.progress.leaderboardsProgress);
+        const bdcProgress = formatProgress({
+            prevRankings: currentRankings.players,
+            currentRankings: prevRankings.players,
+        });
 
-        const newcomers = currentRankings.players
-            .filter(cur => !prevRankings.players.some(player => player.nickName === cur.nickName));
-        const departed = prevRankings.players
-            .filter(cur => !currentRankings.players.some(player => player.nickName === cur.nickName));
-
-        const percentage = ((newestRankings.players.length / newestRankings.lbPlayersCount) * 100).toFixed(2);
+        const percentage = (
+            (newestRankings.players.length / newestRankings.lbPlayersCount) *
+            100
+        ).toFixed(2);
 
         res.json({
-            departed,
-            newcomers,
             percentage,
             lbPlayersCount: newestRankings.lbPlayersCount,
             bdcPlayersCount: newestRankings.players.length,
@@ -91,7 +89,6 @@ async function statisticsController(req, res) {
 }
 
 module.exports = {
-    indexController,
     playersController,
     progressController,
     statisticsController,

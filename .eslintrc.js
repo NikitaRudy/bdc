@@ -51,5 +51,7 @@ module.exports = {
         "react/prop-types": 2, // Prevent missing props validation in a React component definition
         "react/react-in-jsx-scope": 2, // Prevent missing React when using JSX
         "react/self-closing-comp": 2, // Prevent extra closing tags for components without children
+        "no-unused-expressions": "warn",
+        "no-await-in-loop": "warn",
     }
 }

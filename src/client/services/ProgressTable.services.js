@@ -1,5 +1,5 @@
-import axios from 'axios';
+import { get } from '../utils';
 
 export function getProgress() {
-    return axios.get('/api/progress');
+    return get('/api/progress');
 }

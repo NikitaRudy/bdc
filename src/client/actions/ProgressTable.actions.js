@@ -1,12 +1,11 @@
 import {
-    REQUEST_PROGRESS,
     REQUEST_PROGRESS_COMPLETE,
     CHANGE_PROGRESS_FILTER,
 } from '../constants/ProgressTable.constants';
+import { getProgress } from '../services/ProgressTable.services';
 
-export const requestProgress = () => ({
-    type: REQUEST_PROGRESS,
-});
+export const requestProgress = () => async dispatch =>
+    dispatch(requestProgressComplete(await getProgress()));
 
 export const requestProgressComplete = data => ({
     type: REQUEST_PROGRESS_COMPLETE,

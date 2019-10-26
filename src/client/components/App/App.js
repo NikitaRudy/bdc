@@ -1,29 +1,51 @@
-import React, { Component } from 'react';
-import propTypes from 'prop-types';
-import { Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 import TopPlayersTable from './TopPlayersTable';
 import ProgressTable from './ProgressTable';
 import Navigation from './Navigation';
 import Statistics from './Statistics';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+const App = () => {
+    const history = useHistory();
 
-    render() {
-        return (
-            <main>
-                <Navigation />
-                <Route exact path ="/" component={ Statistics } />
-                <Route exact path="/rankings" component={ TopPlayersTable } />
-                <Route exact path="/progress" component={ ProgressTable } />
-            </main>
-        );
-    }
-}
+    useEffect(() => {
+        ReactGA.pageview(history.location.pathname);
+        history.listen(location => ReactGA.pageview(location.pathname));
+    }, []);
 
-App.propTypes = {};
+    return (
+        <main>
+            <Navigation />
+            <Switch>
+                <Route exact path="/" component={Statistics} />
+                <Route exact path="/rankings">
+                    <Redirect to="/rankings/core" />
+                </Route>
+                <Route
+                    exact
+                    path="/rankings/core"
+                    component={TopPlayersTable}
+                />
+                <Route
+                    exact
+                    path="/rankings/support"
+                    component={TopPlayersTable}
+                />
+                <Route exact path="/progress">
+                    <Redirect to="/progress/core" />
+                </Route>
+                <Route exact path="/progress/core" component={ProgressTable} />
+                <Route
+                    exact
+                    path="/progress/support"
+                    component={ProgressTable}
+                />
+                <Redirect to="/" />
+            </Switch>
+        </main>
+    );
+};
 
 export default App;

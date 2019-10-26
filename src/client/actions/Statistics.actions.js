@@ -1,11 +1,10 @@
-import {
-    REQUEST_STATISTICS,
-    REQUEST_STATISTICS_COMPLETE,
-} from '../constants/Statistics.constants';
+import { REQUEST_STATISTICS_COMPLETE } from '../constants/Statistics.constants';
+import { getStatistics } from '../services/Statistics.services';
 
-export const requestStatistics = () => ({
-    type: REQUEST_STATISTICS,
-});
+export const requestStatistics = () => async (dispatch) => {
+    const data = await getStatistics();
+    dispatch(requestStatisticsComplete(data));
+};
 
 export const requestStatisticsComplete = data => ({
     type: REQUEST_STATISTICS_COMPLETE,

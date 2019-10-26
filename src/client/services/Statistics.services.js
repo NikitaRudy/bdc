@@ -1,5 +1,5 @@
-import axios from 'axios';
+import { get } from '../utils';
 
 export function getStatistics() {
-    return axios.get('/api/statistics');
+    return get('/api/statistics');
 }
