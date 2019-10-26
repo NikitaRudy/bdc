@@ -1,6 +1,7 @@
 const path = require('path');
 const CompressionPlugin = require('compression-webpack-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const webpack = require('webpack');
 
 module.exports = {
     entry: ['babel-polyfill', './src/client/index.js'],
@@ -18,6 +19,9 @@ module.exports = {
             test: /\.js$|\.css$|\.html$/,
             threshold: 10240,
             minRatio: 0.8,
+        }),
+        new webpack.DefinePlugin({
+            'process.env.GA_KEY': JSON.stringify(process.env.GA_KEY),
         }),
         // new BundleAnalyzerPlugin(),
     ],

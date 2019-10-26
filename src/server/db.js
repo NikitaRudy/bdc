@@ -6,7 +6,7 @@ mongoose.Promise = Promise;
 const connect = () =>
     mongoose
         .connect(
-            process.env.MONGO_PATH,
+            process.env.MONGO_PATH || 'mongodb://127.0.0.1:27017/bdc-leader',
             {
                 useNewUrlParser: true,
                 useFindAndModify: true,
