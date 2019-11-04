@@ -4,7 +4,7 @@ const calculatePlayersProgress = (current, prev) =>
             nickName: player.nickName,
             progress: calculatePlayerProgress(player, prev, current),
         }))
-        .filter(Boolean);
+        .filter(player => player.progress !== null);
 
 function calculatePlayerProgress(player, prev, current) {
     const bdcPrevPosition = prev.findIndex(cur => cur.nickName === player.nickName);
