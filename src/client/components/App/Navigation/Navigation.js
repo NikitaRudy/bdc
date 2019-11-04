@@ -18,7 +18,8 @@ const Navigation = () => {
     return (
         <div>
             <Navbar color="light" light expand="md">
-                <NavbarBrand href="/">BDC Leaderboards</NavbarBrand>
+                <NavbarBrand className="desktop" href="/">BDC Leaderboards</NavbarBrand>
+                <NavbarBrand className="mobile" href="/">BDC</NavbarBrand>
                 <Nav className="ml-auto" navbar>
                     <UncontrolledDropdown nav inNavbar>
                         <DropdownToggle nav caret>

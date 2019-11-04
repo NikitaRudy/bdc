@@ -14,7 +14,6 @@ a {
 
 main {
     width: 70%;
-    min-width: 400px;
     margin: 0 auto;
 }
 
@@ -54,6 +53,17 @@ td, th {
 
 .statistics {
     margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.statistics > div {
+    width: 50%;
+}
+
+.statistics > div:first-child {
+    margin-right: 50px;
 }
 
 .progress-tabs a {
@@ -62,4 +72,43 @@ td, th {
 
 .pd-10 {
     padding: 10px;
+}
+
+.dashboard-progress-bar {
+    margin: 0 10px;
+}
+
+.mobile {
+    display: none;
+}
+
+.desktop {
+    display: inline-block;
+}
+
+
+@media only screen and (max-width: 800px)  {
+    .mobile {
+        display: inline-block;
+    }
+
+    .desktop {
+        display: none;
+    }
+
+    .statistics {
+        flex-direction: column;
+    }
+
+    .statistics > div {
+        width: 100%;
+    }
+
+    .statistics > div:first-child {
+        margin-right: 0;
+    }
+
+    main {
+        width: 100%
+    }
 }

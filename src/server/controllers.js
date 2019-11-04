@@ -1,6 +1,6 @@
 const logger = require('./logger');
 const { formatProgress } = require('./formatters');
-
+const { calculateBelarusPlayersPercentage } = require('./helpers');
 const { TopPlayers, Snapshot } = require('../scrapper/models');
 
 async function playersController(req, res) {
@@ -56,31 +56,21 @@ async function progressController(req, res) {
 
 async function statisticsController(req, res) {
     try {
-        const lastSnapshots = await Snapshot.find()
-            .sort({ submitDate: -1 })
-            .limit(2)
-            .lean();
-
-        const [newestRankings] = await TopPlayers.find().lean();
-
-        const [currentRankings, prevRankings] = lastSnapshots;
-
-        const bdcProgress = formatProgress({
-            prevRankings: currentRankings.players,
-            currentRankings: prevRankings.players,
-        });
-
-        const percentage = (
-            (newestRankings.players.length / newestRankings.lbPlayersCount) *
-            100
-        ).toFixed(2);
+        const [coreTop, supportTop] = await TopPlayers.find().lean();
 
         res.json({
-            percentage,
-            lbPlayersCount: newestRankings.lbPlayersCount,
-            bdcPlayersCount: newestRankings.players.length,
-            topRank: newestRankings.players.slice(0, 3),
-            topProgress: bdcProgress.slice(0, 3),
+            core: {
+                percentage: calculateBelarusPlayersPercentage(coreTop),
+                lbPlayersCount: coreTop.lbPlayersCount,
+                bdcPlayersCount: coreTop.players.length,
+                topRank: coreTop.players.slice(0, 3),
+            },
+            support: {
+                percentage: calculateBelarusPlayersPercentage(supportTop),
+                lbPlayersCount: supportTop.lbPlayersCount,
+                bdcPlayersCount: supportTop.players.length,
+                topRank: supportTop.players.slice(0, 3),
+            },
         }).end();
     } catch (e) {
         logger.error('statisticsController', e);

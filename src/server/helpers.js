@@ -27,6 +27,10 @@ function calculatePlayerProgress(player, prev, current) {
         };
 }
 
+const calculateBelarusPlayersPercentage = top =>
+    ((top.players.length / top.lbPlayersCount) * 100).toFixed(2);
+
 module.exports = {
     calculatePlayersProgress,
+    calculateBelarusPlayersPercentage,
 };
